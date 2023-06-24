@@ -592,6 +592,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b44ca9f26b370644a816ba30230bcb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 3
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  brickLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  StartPoint: {x: 0, y: 0, z: 0}
+  filePath: Assets/_Game/Map1.txt
+  countBrick: 0
+  Brick: {fileID: 8790377362139059085, guid: 823740f7be76889469efb19b7854253a, type: 3}
 --- !u!95 &7521194911577617387
 Animator:
   serializedVersion: 5
@@ -627,7 +638,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &3767403138959026864
 CapsuleCollider:
