@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{646AE2A0-9B9F-6A0C-82FC-4F240AFE846E}</ProjectGuid>
+    <ProjectGuid>{7BC0F731-A5A9-BB3E-5548-1287D8CB4459}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Game\Scrips\Player.cs" />
     <Compile Include="Assets\_Game\Scrips\CameraFollow.cs" />
+    <Compile Include="Assets\_Game\Scrips\SpointMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Game\Map1.txt" />

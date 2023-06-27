@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,7 +15,6 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject brickPrefab;
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject cubePrefab;
-    [SerializeField] private string filePath = "Assets/_Game/Map1.txt";
     [SerializeField] private int countBrick;
     private int[,] mapData; // Mảng hai chiều để lưu dữ liệu bản đồ
 
@@ -25,8 +25,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        LoadMapFromFile();
-        GenerateMap();
         countBrick = 0;
         brickHeight = 0.3f;
         transform.position = new Vector3(StartPoint.x, StartPoint.y, StartPoint.z);
@@ -36,45 +34,7 @@ public class Player : MonoBehaviour
     {
         Control();
     }
-    private void LoadMapFromFile()
-    {
-        string[] lines = File.ReadAllLines(filePath);
-        int rowCount = lines.Length;
-        int columnCount = lines[0].Length;
-
-        mapData = new int[rowCount, columnCount];
-
-        for (int row = 0; row < rowCount; row++)
-        {
-            for (int col = 0; col < columnCount; col++)
-            {
-                int value = int.Parse(lines[row][col].ToString());
-                mapData[row, col] = value;
-            }
-        }
-    }
-
-    private void GenerateMap()
-    {
-        int rowCount = mapData.GetLength(0);
-        int columnCount = mapData.GetLength(1);
-
-        for (int row = 0; row < rowCount; row++)
-        {
-            for (int col = 0; col < columnCount; col++)
-            {
-                int value = mapData[row, col];
-
-                if (value >= 0 && value < prefabs.Length)
-                {
-                    GameObject prefab = prefabs[value];
-                    Vector3 position = new Vector3(col, 0f, row);
-                    Instantiate(prefab, position, Quaternion.identity);
-                }
-            }
-        }
-    }
-
+   
     private void Control()
     {
         if (!isMoving)
@@ -149,7 +109,11 @@ public class Player : MonoBehaviour
         {
             countBrick += 1;
             Destroy(collision.gameObject);
-            
+            GameObject cloneBrick = Instantiate(brickPrefab, gameObject.transform);
+            cloneBrick.transform.position -= new Vector3(0, countBrick * brickHeight + brickHeight, 0);
+            transform.position += new Vector3(0, brickHeight, 0);
+
+
         }
         if (collision.CompareTag("StopPoint"))
         {
@@ -159,86 +123,5 @@ public class Player : MonoBehaviour
         }
 
     }
-
-/*    private void SpawnPrefabsFromText()
-    {
-        string fileContent = LoadTextFile(filePath);
-        Debug.Log(fileContent);
-        if (!string.IsNullOrEmpty(fileContent))
-        {
-            string[] lines = fileContent.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-            {
-                int number;
-                if (int.TryParse(lines[i], out number))
-                {
-                    GameObject prefab = GetPrefabByNumber(number);
-                    if (prefab != null)
-                    {
-                        Vector3 position = new Vector3(i, 0, 0);
-                        Instantiate(prefab, position, Quaternion.identity);
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Invalid number format: " + lines[i]);
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("Failed to load file: " + filePath);
-        }
-    }
-
-    private GameObject GetPrefabByNumber(int number)
-    {
-        string prefabPath = "";
-
-        switch (number)
-        {
-            case 0:
-                prefabPath = "Prefabs/BrickBlock";
-                break;
-            case 1:
-                prefabPath = "Prefabs/Wall";
-                break;
-            case 2:
-                prefabPath = "Prefabs/Cube";
-                break;
-            default:
-                Debug.LogError("Prefab not found for number: " + number);
-                break;
-        }
-
-        if (!string.IsNullOrEmpty(prefabPath))
-        {
-            GameObject prefab = Resources.Load<GameObject>(prefabPath);
-            if (prefab == null)
-            {
-                Debug.LogError("Failed to load prefab at path: " + prefabPath);
-            }
-            return prefab;
-        }
-
-        return null;
-    }
-
-    private string LoadTextFile(string filePath)
-    {
-        string fileContent = "";
-
-        try
-        {
-            fileContent = File.ReadAllText(filePath);
-        }
-        catch (IOException e)
-        {
-            Debug.LogError("Failed to load text file: " + filePath + "\n" + e.Message);
-        }
-
-        return fileContent;
-    }
-*/
 
 }
