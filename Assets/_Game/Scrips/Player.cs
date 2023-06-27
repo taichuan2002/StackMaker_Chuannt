@@ -7,16 +7,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject[] prefabs; // Mảng prefab tương ứng với các giá trị số trong tệp văn bản
     [SerializeField] private float speed;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private LayerMask unBrickBlock;
+    [SerializeField] private LayerMask BrickBlock;
     [SerializeField] private Vector3 StartPoint;
     [SerializeField] public GameObject brickPrefab;
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject cubePrefab;
     [SerializeField] private int countBrick;
-    private int[,] mapData; // Mảng hai chiều để lưu dữ liệu bản đồ
+    [SerializeField] private List<GameObject> cloneBrick = new List<GameObject>();
 
     private float brickHeight;
     private bool isMoving = false;
@@ -103,23 +102,35 @@ public class Player : MonoBehaviour
         }
     }
 
+   
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("BrickBlock"))
+        
+        if (collision.tag == "brick")
         {
             countBrick += 1;
             Destroy(collision.gameObject);
-            GameObject cloneBrick = Instantiate(brickPrefab, gameObject.transform);
-            cloneBrick.transform.position -= new Vector3(0, countBrick * brickHeight + brickHeight, 0);
+            GameObject newBrick = Instantiate(brickPrefab, gameObject.transform);
+            newBrick.transform.position += new Vector3(0, countBrick * brickHeight, 0);
             transform.position += new Vector3(0, brickHeight, 0);
-
-
+            cloneBrick.Add(newBrick);
         }
-        if (collision.CompareTag("StopPoint"))
+        if (collision.tag == "StopPoint")
         {
             StopAllCoroutines();
             isMoving = false;
-            collision.gameObject.SetActive(false);
+        }
+        if(collision.tag == "unBrick")
+        {
+            countBrick -= 1;
+            if (cloneBrick.Count > 0)
+            {
+                GameObject lastBrick = cloneBrick[cloneBrick.Count - 1];
+                lastBrick.transform.parent = null;
+                lastBrick.transform.position -= new Vector3(0.1f, 0, 0);
+                cloneBrick.RemoveAt(cloneBrick.Count - 1);
+            }
+
         }
 
     }
