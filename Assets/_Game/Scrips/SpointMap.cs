@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+
 public class SpointMap : MonoBehaviour
 {
     [SerializeField] private string filePath = "Assets/_Game/Map1.txt";
     public GameObject[] prefabs; // Mảng prefab tương ứng với các giá trị số trong tệp văn bản
     private string[,] mapData; // Mảng hai chiều để lưu dữ liệu bản đồ
+    [SerializeField] private Transform PointPlayer;
+    public List<GameObject> ListBrick = new List<GameObject>();
+
+
     void Start()
     {
         LoadMapFromFile();
@@ -46,9 +51,12 @@ public class SpointMap : MonoBehaviour
                 {
                     GameObject prefab = prefabs[intValue];
                     Vector3 position = new Vector3(col, 0f, row);
-                    Instantiate(prefab, position, Quaternion.identity);
+                    GameObject Point = Instantiate(prefab, position, Quaternion.identity);
+                    ListBrick.Add(Point);
                 }
             }
         }
     }
+
+    
 }

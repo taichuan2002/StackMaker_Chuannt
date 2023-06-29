@@ -59,6 +59,7 @@
     <Compile Include="Assets\_Game\Scrips\Player.cs" />
     <Compile Include="Assets\_Game\Scrips\CameraFollow.cs" />
     <Compile Include="Assets\_Game\Scrips\SpointMap.cs" />
+    <Compile Include="Assets\_Game\Scrips\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Game\Map1.txt" />
